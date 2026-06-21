@@ -1,0 +1,47 @@
+{
+  "name": "@bitget/qwen-agent",
+  "version": "0.1.0",
+  "description": "Reference trading agent: MCP market data + Qwen LLM for decisions (simulated portfolio).",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "qwen-agent": "dist/cli.js"
+  },
+  "exports": {
+    ".": "./dist/index.js",
+    "./agent": "./dist/agent.js",
+    "./portfolio": "./dist/portfolio.js",
+    "./qwen": "./dist/qwen.js",
+    "./mcp-client": "./dist/mcp-client.js",
+    "./prompt": "./dist/prompt.js",
+    "./action": "./dist/action.js",
+    "./env": "./dist/env.js"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/cli.js",
+    "dev": "tsx watch src/cli.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit -p tsconfig.test.json",
+    "typecheck:src": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "dotenv": "^16.4.5",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.5",
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.2"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

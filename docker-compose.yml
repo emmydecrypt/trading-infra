@@ -1,0 +1,65 @@
+version: "3.9"
+
+services:
+  mcp-server:
+    build:
+      context: .
+      dockerfile: packages/mcp-server/Dockerfile
+    image: trading-infra/mcp-server:0.1.0
+    container_name: ti-mcp
+    stdin_open: true
+    tty: true
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "process.stdin.resume(); setTimeout(()=>process.exit(0), 100)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+  eval-harness:
+    build:
+      context: .
+      dockerfile: packages/eval-harness/Dockerfile
+    image: trading-infra/eval-harness:0.1.0
+    container_name: ti-eval
+    depends_on:
+      mcp-server:
+        condition: service_healthy
+    ports:
+      - "4000:4000"
+    environment:
+      - EVAL_PORT=4000
+      - EVAL_DB_PATH=/app/data/eval.db
+      - NODE_ENV=production
+    volumes:
+      - eval-data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:4000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  qwen-agent:
+    build:
+      context: .
+      dockerfile: packages/qwen-agent/Dockerfile
+    image: trading-infra/qwen-agent:0.1.0
+    container_name: ti-qwen
+    depends_on:
+      eval-harness:
+        condition: service_healthy
+      mcp-server:
+        condition: service_healthy
+    environment:
+      - QWEN_API_KEY=${QWEN_API_KEY}
+      - QWEN_BASE_URL=${QWEN_BASE_URL:-https://dashscope.aliyuncs.com/compatible-mode/v1}
+      - QWEN_MODEL=${QWEN_MODEL:-qwen-plus}
+    restart: unless-stopped
+
+volumes:
+  eval-data:

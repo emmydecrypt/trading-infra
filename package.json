@@ -1,0 +1,30 @@
+{
+  "name": "trading-infra",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AI x Crypto Trading Infra — MCP data layer + realistic backtester + eval harness + Qwen reference agent",
+  "license": "MIT",
+  "workspaces": [
+    "packages/mcp-server",
+    "packages/eval-harness",
+    "packages/qwen-agent"
+  ],
+  "scripts": {
+    "install:all": "npm install && npm --workspace packages/mcp-server install && npm --workspace packages/eval-harness install && npm --workspace packages/qwen-agent install",
+    "build": "npm --workspace packages/mcp-server run build && npm --workspace packages/qwen-agent run build && npm --workspace packages/eval-harness run typecheck",
+    "test": "npm --workspace packages/mcp-server run test && npm --workspace packages/eval-harness run test && npm --workspace packages/qwen-agent run test",
+    "test:backtester": "cd packages/backtester && uv run pytest",
+    "test:all": "npm test && npm run test:backtester",
+    "start:mcp": "npm --workspace packages/mcp-server run start",
+    "start:eval": "npm --workspace packages/eval-harness run start",
+    "start:agent": "npm --workspace packages/qwen-agent run start",
+    "dev": "concurrently -k -n mcp,eval -c blue,green \"npm:start:mcp\" \"npm:start:eval\"",
+    "demo": "bash demo/demo.sh"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

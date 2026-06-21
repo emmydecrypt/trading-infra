@@ -1,0 +1,32 @@
+{
+  "name": "@ai-x-crypto/eval-harness",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Eval harness + leaderboard API for AI x Crypto trading agent submissions",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
+    "start": "node --import tsx/esm src/server.ts",
+    "dev": "node --import tsx/esm src/server.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "backtester": "python3 backtester/backtester.py"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.3.0",
+    "fastify": "^4.28.1",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.11",
+    "@types/node": "^20.16.5",
+    "tsx": "^4.19.1",
+    "typescript": "^5.5.4",
+    "vitest": "^2.0.5"
+  }
+}
