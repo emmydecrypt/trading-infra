@@ -5,7 +5,7 @@ import { LRUCache } from 'lru-cache';
  * Used to cache candles/orderbook responses so we don't burn Bitget's
  * 10 req/sec quota on repeated calls.
  */
-export class TTLCache<V> {
+export class TTLCache<V extends NonNullable<unknown>> {
   private readonly cache: LRUCache<string, V>;
 
   constructor(

@@ -17,6 +17,6 @@
     "allowSyntheticDefaultImports": true,
     "noUncheckedIndexedAccess": false
   },
-  "include": ["src/**/*", "examples/**/*", "tests/**/*"],
+  "include": ["src/**/*", "examples/**/*"],
   "exclude": ["node_modules", "dist"]
 }
